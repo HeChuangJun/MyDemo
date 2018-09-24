@@ -14,7 +14,7 @@ import com.hechuangjun.domain.Staff;
 * 类说明 :
 */
 @Repository
-public class StaffDaoImpl extends IBaseDaoImpl<Staff> implements IStaffDao{
+public class StaffDaoImpl extends BaseDaoImpl<Staff> implements IStaffDao{
 
 
 }

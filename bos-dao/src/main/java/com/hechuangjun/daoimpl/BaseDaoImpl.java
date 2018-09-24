@@ -17,7 +17,7 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import com.hechuangjun.dao.IBaseDao;
 import com.hechuangjun.utils.PageBean;
 
-public class IBaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T>{
+public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T>{
 	//代表某个实体的类型
 	private Class<T> entityClass;
 	@Resource
@@ -27,7 +27,7 @@ public class IBaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T>{
 	}
 	
 	//在父类(IBaseDaoImpl)的构造方法中动态获得entityClass字节码对象
-	public IBaseDaoImpl() {
+	public BaseDaoImpl() {
 		//获得T
 		ParameterizedType Superclass = (ParameterizedType) this.getClass().getGenericSuperclass();
 		//获得父类上声明的泛型数组
@@ -60,7 +60,7 @@ public class IBaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T>{
 	}
 
 	@Override
-	public List<T> findAll(T entity) {
+	public List<T> findAll() {
 		String hql="from "+entityClass.getSimpleName();
 		return (List<T>) this.getHibernateTemplate().find(hql);
 		
@@ -103,6 +103,12 @@ public class IBaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T>{
 		int maxResults=pageSize;
 		List rows = this.getHibernateTemplate().findByCriteria(detachedCriteria, firstResult, maxResults);
 		pageBean.setRows(rows);
+	}
+
+	@Override
+	public void saveOrUpdate(T entity) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().saveOrUpdate(entity);
 	}
 
 }

@@ -12,7 +12,7 @@ import com.hechuangjun.dao.IUserDao;
 import com.hechuangjun.domain.User;
 import com.hp.hpl.sparta.xpath.ThisNodeTest;
 @Repository
-public class UserDaoImpl extends IBaseDaoImpl<User> implements IUserDao{
+public class UserDaoImpl extends BaseDaoImpl<User> implements IUserDao{
 
 	@Override
 	public User findUserByUsernameAndPassword(String username, String password) {
