@@ -1,6 +1,7 @@
 package com.hechuangjun.service;
 
 import com.hechuangjun.domain.Staff;
+import com.hechuangjun.utils.PageBean;
 
 /** 
 * @author 作者 junye E-mail: 1105128664@qq.com
@@ -10,5 +11,13 @@ import com.hechuangjun.domain.Staff;
 public interface IStaffService {
 
 	public void save(Staff model);
+
+	public void pageQuery(PageBean pageBean);
+
+	public void deleteBatch(String ids);
+
+	public Staff findById(String id);
+
+	public void update(Staff staff);
 
 }

@@ -10,8 +10,12 @@ import javax.annotation.Resource;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+
 import com.hechuangjun.dao.IBaseDao;
+import com.hechuangjun.utils.PageBean;
 
 public class IBaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T>{
 	//代表某个实体的类型
@@ -74,6 +78,31 @@ public class IBaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T>{
 		}
 		//执行更新
 		namedQuery.executeUpdate();
+	}
+
+	@Override
+	//通用分页查询方法
+	public void pageQuery(PageBean pageBean) {
+		// TODO Auto-generated method stub
+		int currentPage = pageBean.getCurrentPage();
+		DetachedCriteria detachedCriteria = pageBean.getDetachedCriteria();
+		int pageSize = pageBean.getPageSize();
+		
+		
+		//查询total数据总量
+		//指定hibernate框架使用select count(*) from bc_staff;
+		detachedCriteria.setProjection(Projections.rowCount());
+		List<Long> countList = (List<Long>) this.getHibernateTemplate().findByCriteria(detachedCriteria);
+		Long long1 = countList.get(0);
+		pageBean.setTotal(long1.intValue());
+		//查询rows当前页需要展示的数据集合
+		//指定hibernate框架使用select * from bc_staff;
+		detachedCriteria.setProjection(null);
+		
+		int firstResult=(currentPage-1)*pageSize;
+		int maxResults=pageSize;
+		List rows = this.getHibernateTemplate().findByCriteria(detachedCriteria, firstResult, maxResults);
+		pageBean.setRows(rows);
 	}
 
 }
